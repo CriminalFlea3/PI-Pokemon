@@ -1,6 +1,5 @@
 import React from "react";
 import style from "./search.module.css";
-import "boxicons";
 
 export const Search = () => {
   const button = style.button;
