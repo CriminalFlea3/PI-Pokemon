@@ -1,5 +1,6 @@
 import React from "react";
-import style from "./card.module.css";
+import { Link } from "react-router-dom";
+import "./card.css";
 
 export const Card = () => {
   //   const colors = {
@@ -19,23 +20,39 @@ export const Card = () => {
   //     normal: "#F5F5F5",
   //   };
 
+  const type = [
+    "fire",
+    "normal",
+    "ice",
+    "dark",
+    "watter",
+    "grass",
+    "fairy",
+    "electric",
+    "psychic",
+  ];
+
   return (
     <>
-      <div className={ style.container }>
-        <figure className={ style.fire }>
-          <div className={ style.cardImageContainer }>
-            <img
-              src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/shiny/132.gif"
-              alt=""
-              className="CardImage"
-            />
-          </div>
-          <figcaption class={ style.cardCaption }>
-            <h1 class={ style.cardName }>Diito</h1>
+      <div className="container">
+        {type?.map((c) => (
+          <Link to={ `/${c}`} >
+          <figure className={ c }>
+            <div className="cardImageContainer">
+              <img
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/shiny/132.gif"
+                alt=""
+                className="CardImage"
+              />
+            </div>
+            <figcaption className="cardCaption">
+              <h1 className="cardName">Diito</h1>
 
-            <h3 class={ style.cardType }>normal</h3>
-          </figcaption>
-        </figure>
+              <h3 class="cardType">{ c }</h3>
+            </figcaption>
+          </figure>
+          </Link>
+        ))}
       </div>
     </>
   );

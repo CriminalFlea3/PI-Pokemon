@@ -12,8 +12,8 @@ export const Navbar = () => {
         <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/pokedex">Pokedex</Link></li>
-            <li><Link to="/legendaries">Legendaries</Link></li>
-            <li><Link to="/">Documentation</Link></li>
+            <li><Link to="/create">Create</Link></li>
+            <li><Link to="/team">My team</Link></li>
         </ul>
       </header>
     </div>
