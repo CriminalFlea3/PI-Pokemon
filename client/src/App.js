@@ -1,10 +1,18 @@
-import './App.css';
+import "./App.css";
+import { Route } from "react-router-dom";
+import { LandingPage } from "./Pages/LandingPage/LandingPage"
+import { Navbar } from "./components/Navbar/Navbar";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Henry Pokemon</h1>
-    </div>
+    <>
+      <Navbar />
+      <Route exact path="/">
+        <LandingPage />
+      </Route>
+      <Route exact path="/pokedex">
+      </Route>
+    </>
   );
 }
 
