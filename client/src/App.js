@@ -2,6 +2,7 @@ import "./App.css";
 import { Route } from "react-router-dom";
 import { LandingPage } from "./Pages/LandingPage/LandingPage"
 import { Pokedex } from "./Pages/Pokedex/Pokedex"
+import { Create } from "./Pages/Create/Create"
 import { Navbar } from "./components/Navbar/Navbar";
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
       </Route>
       <Route exact path="/pokedex">
         <Pokedex />
+      </Route>
+      <Route exact path="/create">
+        <Create />
       </Route>
     </>
   );

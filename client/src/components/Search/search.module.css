@@ -33,6 +33,7 @@
   background-color: rgb(26, 188, 156);
   color: white;
   border: none;
+  cursor: pointer;
 }
 
 .field2 {

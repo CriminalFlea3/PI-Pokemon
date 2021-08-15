@@ -26,6 +26,15 @@ export const Search = () => {
             <option value="dark">Oscuro</option>
             <option value="grass">Planta</option>
             <option value="ice">Hielo</option>
+            <option value="fighting">Luchador</option>
+            <option value="poison">Veneno</option>
+            <option value="ground">Tierra</option>
+            <option value="flying">Volador</option>
+            <option value="bug">Insecto</option>
+            <option value="rock">Roca</option>
+            <option value="ghost">Fantasma</option>
+            <option value="dragon">Dragon</option>
+            <option value="steel">Metal</option>
           </select>
           <select name="creado" className={button}>
             <option value="">Original</option>

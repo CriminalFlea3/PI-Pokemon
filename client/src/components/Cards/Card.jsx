@@ -36,21 +36,29 @@ export const Card = () => {
     <>
       <div className="container">
         {type?.map((c) => (
-          <Link to={ `/${c}`} >
-          <figure className={ c }>
-            <div className="cardImageContainer">
-              <img
-                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/shiny/132.gif"
-                alt=""
-                className="CardImage"
-              />
-            </div>
-            <figcaption className="cardCaption">
-              <h1 className="cardName">Diito</h1>
-
-              <h3 class="cardType">{ c }</h3>
-            </figcaption>
-          </figure>
+          <Link to={`/${c}`} key={c}>
+            <figure className={c}>
+              <div className="cardImageContainer">
+                <img
+                  src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/shiny/132.gif"
+                  alt=""
+                  className="CardImage"
+                />
+              </div>
+              <figcaption className="cardCaption">
+                <h1 className="cardName">Diito</h1>
+                {c.type ? (
+                  <div className="types">
+                    <h3 className="cardType">{c}</h3>
+                    <h3 className="cardType">{c}</h3>
+                  </div>
+                ) : (
+                  <div className="types">
+                    <h3 className="cardType">{c}</h3>
+                  </div>
+                )}
+              </figcaption>
+            </figure>
           </Link>
         ))}
       </div>
