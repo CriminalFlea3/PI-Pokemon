@@ -6,23 +6,33 @@ const info = async (num) => {
   const data = await api.json();
   const api2 = await fetch(data.next);
   const data2 = await api2.json();
-  const bd = await Pokemon.findAll();
+  const bd = await Pokemon.findAll({ include: Tipo });
 
-  const base = [...data.results, ...data2.results, ...bd];
+  const base = [...bd, ...data.results, ...data2.results];
   let pokemonInfo = [];
   let inicio = num * 9 - 9;
   let antes = num * 9;
 
   for (i = inicio; i < antes; i++) {
     if (!base[i]) return pokemonInfo;
-    const pokemon = await fetch(base[i].url);
-    const info = await pokemon.json();
-    pokemonInfo.push({
-      id: info.id,
-      name: info.name,
-      type: info.types,
-      img: info.sprites.front_shiny,
-    });
+    if (base[i].url) {
+      const pokemon = await fetch(base[i].url);
+      const info = await pokemon.json();
+
+      pokemonInfo.push({
+        id: info.id,
+        name: info.name,
+        type: info.types,
+        img: info.sprites.front_shiny,
+      });
+    } else {
+      pokemonInfo.push({
+        id: base[i].id,
+        name: base[i].name,
+        type: base[i].tipos,
+        img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
+      });
+    }
   }
   // const poke = await Pokemon.findAll({ include: Tipo });
   // pokemonInfo.push({ ...poke });
@@ -32,36 +42,38 @@ const info = async (num) => {
 
 const forName = async (name) => {
   try {
-    const api = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
-    const data = await api.json();
-    const pokemonName = [
-      {
-        id: data.id,
-        name: data.name,
-        type: data.types,
-        img: data.sprites.front_shiny,
+    const db = await Pokemon.findOne({
+      where: {
+        name: name,
       },
-    ];
-
-    return pokemonName;
-  } catch (e) {
-    try {
-      const db = await Pokemon.findOne({
-        where: {
-          name: name,
+      include: Tipo,
+    });
+    if (db) {
+      const pokemonDb = [
+        {
+          id: db.id,
+          name: db.name,
+          type: db.tipos,
+          img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
         },
-        include: Tipo,
-      });
-
-      const pokemonDb = {
-        id: db.id,
-        name: db.name,
-        img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
-      };
+      ];
       return pokemonDb;
-    } catch (error) {
-      return [];
+    } else {
+      const api = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+      const data = await api.json();
+      const pokemonName = [
+        {
+          id: data.id,
+          name: data.name,
+          type: data.types,
+          img: data.sprites.front_shiny,
+        },
+      ];
+
+      return pokemonName;
     }
+  } catch (error) {
+    return [];
   }
 };
 
@@ -85,18 +97,14 @@ const forId = async (id) => {
     ];
 
     return pokemonId;
-  } catch (error) {
-    try {
-      const db = await Pokemon.findOne({
-        where: {
-          id: id,
-        },
-        include: Tipo,
-      });
-
-      const pokemonDb = {
-        id: data.id,
-        name: data.name,
+  } catch (error) {}
+  try {
+    const db = await Pokemon.findByPk(id, { include: Tipo });
+    const pokemonDb = [
+      {
+        id: db.id,
+        name: db.name,
+        type: db.tipos,
         img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
         vida: db.vida,
         fuerza: db.fuerza,
@@ -104,11 +112,11 @@ const forId = async (id) => {
         velocidad: db.velocidad,
         height: db.altura,
         weight: db.peso,
-      };
-      return pokemonDb;
-    } catch (error) {
-      return [];
-    }
+      },
+    ];
+    return pokemonDb;
+  } catch (error) {
+    return [];
   }
 };
 
