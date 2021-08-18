@@ -9,11 +9,10 @@ router.get('/', async (req, res) => {
     const types = await api.json();
     for( t of types.results ) {
         const existe = await Tipo.findOne({where: { name: t.name }})
-        if(existe) return res.send('Ya existe')
+        if(existe) return res.json(await Tipo.findAll())
         await Tipo.create({ name: t.name})
     }
-    const type = await Tipo.findAll();
-    res.json(type);
+    res.json(await Tipo.findAll());
 })
 
 

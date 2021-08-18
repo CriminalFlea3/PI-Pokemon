@@ -1,87 +1,172 @@
-import React from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import style from "./form.module.css";
 
 export const Form = () => {
+  const options = useSelector((store) => store.types);
+
+  const validate = (input) => {
+    let errors = {};
+    if (!input.name) {
+      errors.name = "El name es obligatorio";
+    }
+
+    return errors;
+  };
+  const [data, setData] = useState({
+    name: "",
+    vida: 0,
+    fuerza: 0,
+    defensa: 0,
+    velocidad: 0,
+    altura: 0,
+    peso: 0,
+    tipos: [],
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const handleInputChange = (e) => {
+    setErrors(
+      validate({
+        ...data,
+        [e.target.name]: e.target.value,
+      })
+    );
+    setData({
+      ...data,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const checkbox = (e) => {
+    if (data.tipos.includes(e.target.value)) {
+      data.tipos = data.tipos.filter((id) => id !== e.target.value);
+      setData({
+        ...data,
+        tipos: data.tipos,
+      });
+    } else {
+      setData({
+        ...data,
+        tipos: [...data.tipos, e.target.value],
+      });
+    }
+  };
+
+  const submit = async (e) => {
+    e.preventDefault();
+    const crear = await fetch("http://localhost:3001/pokemons", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const respuesta = await crear.json();
+    setData({
+      name: "",
+      vida: 0,
+      fuerza: 0,
+      defensa: 0,
+      velocidad: 0,
+      altura: 0,
+      peso: 0,
+      tipos: [],
+    });
+  };
+
   return (
     <div className={style.containerCreate}>
-      <form action="" className={style.form}>
+      <form action="POST" className={style.form} onSubmit={submit}>
         <div className={style.separado}>
           <h1>Crea tu propio Pokemon</h1>
-          <p className={style.question}>
+          <p className={errors.name ? style.danger : style.question}>
             <label>Pokemon name</label>
-            <input type="text" placeholder="pikachu.." />
+            <input
+              type="text"
+              placeholder="pikachu.."
+              name="name"
+              value={data.name}
+              onChange={handleInputChange}
+              required
+            />
           </p>
+          {errors.name ? <p className="danger">{errors.username}</p> : null}
           <p className={style.question}>
             <label>Vida</label>
-            <input type="text" />
+            <input
+              type="number"
+              name="vida"
+              value={data.vida}
+              onChange={handleInputChange}
+            />
           </p>
           <p className={style.question}>
             <label>Fuerza</label>
-            <input type="text" />
+            <input
+              type="number"
+              name="fuerza"
+              value={data.fuerza}
+              onChange={handleInputChange}
+            />
           </p>
           <p className={style.question}>
             <label>Defensa</label>
-            <input type="text" />
+            <input
+              type="number"
+              name="defensa"
+              value={data.defensa}
+              onChange={handleInputChange}
+            />
           </p>
           <p className={style.question}>
             <label>Velocidad</label>
-            <input type="text" />
+            <input
+              type="number"
+              name="velocidad"
+              value={data.velocidad}
+              onChange={handleInputChange}
+            />
           </p>
           <p className={style.question}>
             <label>Altura</label>
-            <input type="text" />
+            <input
+              type="number"
+              name="altura"
+              value={data.altura}
+              onChange={handleInputChange}
+            />
           </p>
           <p className={style.question}>
             <label>Peso</label>
-            <input type="text" />
+            <input
+              type="number"
+              name="peso"
+              value={data.peso}
+              onChange={handleInputChange}
+            />
           </p>
         </div>
 
         <div className={style.hiddenCB}>
           <h1>Tipos</h1>
           <div className={style.tipos}>
-            <input type="checkbox" name="normal" id="normal" />
-            <label for="normal">Normal</label>
-            <input type="checkbox" name="fire" id="fire" />
-            <label for="fire">Fuego</label>
-            <input type="checkbox" name="watter" id="watter" />
-            <label for="watter">Agua</label>
-            <input type="checkbox" name="grass" id="grass" />
-            <label for="grass">Planta</label>
-            <br />
-            <input type="checkbox" name="ice" id="ice" />
-            <label for="ice">Hielo</label>
-            <input type="checkbox" name="fighting" id="fighting" />
-            <label for="fighting">Luchador</label>
-            <input type="checkbox" name="poison" id="poison" />
-            <label for="poison">Veneno</label>
-            <input type="checkbox" name="ground" id="ground" />
-            <label for="ground">Tierra</label>
-            <br />
-            <input type="checkbox" name="flying" id="flying" />
-            <label for="flying">Volador</label>
-            <input type="checkbox" name="psychic" id="psychic" />
-            <label for="psychic">Psiquico</label>
-            <input type="checkbox" name="bug" id="bug" />
-            <label for="bug">Insecto</label>
-            <input type="checkbox" name="rock" id="rock" />
-            <label for="rock">Roca</label>
-            <br />
-            <input type="checkbox" name="ghost" id="ghost" />
-            <label for="ghost">Fantasma</label>
-            <input type="checkbox" name="dragon" id="dragon" />
-            <label for="dragon">Dragon</label>
-            <input type="checkbox" name="dark" id="dark" />
-            <label for="dark">Oscuro</label>
-            <input type="checkbox" name="stell" id="stell" />
-            <label for="stell">Metal</label>
-            <br />
-            <input type="checkbox" name="electric" id="electric" />
-            <label for="electric">Electrico</label>
-            <input type="checkbox" name="fairy" id="fairy" />
-            <label for="fairy">Hada</label>
-            <br />
-            <input type="submit" value="Crear" className={ style.submit } />
+            {options?.map((t) => (
+              <div key={t.slot}>
+                <input
+                  type="checkbox"
+                  name={t.name}
+                  value={t.slot}
+                  id={t.slot}
+                  onChange={checkbox}
+                />
+                <label htmlFor={t.slot}>{t.name}</label>
+                {t.slot % 4 === 0 ? <br /> : null}
+              </div>
+            ))}
+            <input type="submit" value="Crear" className={style.submit} />
           </div>
         </div>
       </form>

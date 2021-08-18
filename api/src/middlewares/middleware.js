@@ -26,11 +26,18 @@ const info = async (num) => {
         img: info.sprites.front_shiny,
       });
     } else {
+      const types = base[i].tipos.map((t) => {
+        return {
+          type: {
+            name: t.name,
+          },
+        };
+      });
       pokemonInfo.push({
         id: base[i].id,
         name: base[i].name,
-        type: base[i].tipos,
-        img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
+        type: types,
+        img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
       });
     }
   }
@@ -49,12 +56,21 @@ const forName = async (name) => {
       include: Tipo,
     });
     if (db) {
+
+      const types = db.tipos.map((t) => {
+        return {
+          type: {
+            name: t.name,
+          },
+        };
+      });
+      
       const pokemonDb = [
         {
           id: db.id,
           name: db.name,
-          type: db.tipos,
-          img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
+          type: types,
+          img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
         },
       ];
       return pokemonDb;
@@ -81,6 +97,7 @@ const forId = async (id) => {
   try {
     const api = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await api.json();
+    
     const pokemonId = [
       {
         id: data.id,
@@ -100,12 +117,21 @@ const forId = async (id) => {
   } catch (error) {}
   try {
     const db = await Pokemon.findByPk(id, { include: Tipo });
+
+    const types = db.tipos.map((t) => {
+      return {
+        type: {
+          name: t.name,
+        },
+      };
+    });
+
     const pokemonDb = [
       {
         id: db.id,
         name: db.name,
-        type: db.tipos,
-        img: "https://e7.pngegg.com/pngimages/799/234/png-clipart-pokxe9mon-go-pikachu-pokxe9-ball-icon-blue-eggs-blue-game.png",
+        type: types,
+        img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
         vida: db.vida,
         fuerza: db.fuerza,
         defensa: db.defensa,

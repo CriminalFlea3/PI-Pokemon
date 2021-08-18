@@ -1,40 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
 import style from "./search.module.css";
+import { useSelector, useDispatch } from "react-redux";
+import { getByName } from '../../actions';
 
 export const Search = () => {
+  const dispatch = useDispatch();
+  const [pokemons, setPokemons] = useState('')
+  const options = useSelector((store) => store.types);
   const button = style.button;
+
+  const handleInputChange = (e) => {
+    setPokemons(e.target.value);
+  }
+
+  const submit = (e) => {
+    e.preventDefault();
+    dispatch(getByName(pokemons));
+    setPokemons('');
+  } 
+
   return (
     <div className={style.container}>
-      <form>
+      <form onSubmit={submit}>
         <div className={style.field}>
           <input
             type="text"
             id="searchterm"
+            value={pokemons}
+            onChange={handleInputChange}
             placeholder="Encuentra tu pokemon..."
           />
           <input className={button} type="submit" value="Find!" />
         </div>
-        <div className={style.field2}>
+      </form>
+      <div className={style.field2}>
           <select className={button} name="Type">
             <option value="">Tipo:</option>
-            <option value="fire">Fuego</option>
-            <option value="fairy">Hada</option>
-            <option value="watter">Agua</option>
-            <option value="normal">Normal</option>
-            <option value="electric">Electrico</option>
-            <option value="psychic">Psiquico</option>
-            <option value="dark">Oscuro</option>
-            <option value="grass">Planta</option>
-            <option value="ice">Hielo</option>
-            <option value="fighting">Luchador</option>
-            <option value="poison">Veneno</option>
-            <option value="ground">Tierra</option>
-            <option value="flying">Volador</option>
-            <option value="bug">Insecto</option>
-            <option value="rock">Roca</option>
-            <option value="ghost">Fantasma</option>
-            <option value="dragon">Dragon</option>
-            <option value="steel">Metal</option>
+            {options?.map((p) => (
+              <option value={p.slot} key={p.slot}>{p.name}</option>
+            ))}
           </select>
           <select name="creado" className={button}>
             <option value="">Original</option>
@@ -48,7 +52,6 @@ export const Search = () => {
             <option value="fuerza">Fuerza-</option>
           </select>
         </div>
-      </form>
     </div>
   );
 };

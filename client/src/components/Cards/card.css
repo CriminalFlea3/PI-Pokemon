@@ -76,12 +76,12 @@ figure {
     background-color: #c08a53;
 }
 
-.watter {
+.water {
     background: linear-gradient(120deg, #1cb5e0 0%, #000851 100%);
     box-shadow: 0px 5px 20px -10px #000851;
 }
 
-.watter .cardType {
+.water .cardType {
     background-color: #1cb5e0;
 }
 
