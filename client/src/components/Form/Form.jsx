@@ -65,6 +65,7 @@ export const Form = () => {
       body: JSON.stringify(data),
     });
     const respuesta = await crear.json();
+    console.log(respuesta)
     setData({
       name: "",
       vida: 0,

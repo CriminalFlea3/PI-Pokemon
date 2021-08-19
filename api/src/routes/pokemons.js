@@ -5,34 +5,35 @@ const { info, forName, forId } = require("../middlewares/middleware.js");
 const router = Router();
 
 router.get("/", async (req, res) => {
-  let page = req.query.page;
-
+  let { page, name, alpha, by } = req.query;
+  let pokemonInfo = [];
   if (!page) page = 1;
-  let pokemonInfo = await info(Number(page));
+  if (name) {
+    name = name.toLowerCase();
+    pokemonInfo = await forName(name);
+    if (!pokemonInfo.length)
+      return res.json({ info: "No se encontro el pokemon" });
+    return res.json(pokemonInfo);
+  }
+
+  pokemonInfo = await info(Number(page), alpha, by);
   if (!pokemonInfo.length) return res.json({ info: "No hay mas registros" });
 
   res.json(pokemonInfo);
 });
 
-router.get("/:param", async (req, res) => {
-  const { param } = req.params;
-  if (param > 0 || param.includes("-")) {
-    const pokemonInfo = await forId(param);
-    if (!pokemonInfo.length)
-      return res.json({ info: "No se encontro el pokemon" });
-    res.json(pokemonInfo);
-  } else {
-    const pokemonInfo = await forName(param);
-    if (!pokemonInfo.length)
-      return res.json({ info: "No se encontro el pokemon" });
-    res.json(pokemonInfo);
-  }
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const pokemonInfo = await forId(id);
+  if (!pokemonInfo.length)
+    return res.json({ info: "No se encontro el pokemon" });
+  res.json(pokemonInfo);
 });
 
 router.post("/", async (req, res) => {
   let { name, vida, fuerza, defensa, velocidad, altura, peso, tipos } =
     req.body;
-  console.log(req.body)
+  console.log(req.body);
   if (
     isNaN(vida) ||
     isNaN(fuerza) ||
@@ -41,12 +42,12 @@ router.post("/", async (req, res) => {
     isNaN(altura) ||
     isNaN(peso)
   )
-    return res.json({info: "Alguno de los argumentos no es un numero"});
+    return res.json({ info: "Alguno de los argumentos no es un numero" });
 
-  if (!name) return res.json({info: "El nombre es obligatorio"});
+  if (!name) return res.json({ info: "El nombre es obligatorio" });
 
   const existe = await Pokemon.findOne({ where: { name: name } });
-  if (existe) return res.json({info: "El pokemon ya existe"});
+  if (existe) return res.json({ info: "El pokemon ya existe" });
 
   const pokemon = await Pokemon.create({
     name: name.toLowerCase(),

@@ -1,14 +1,23 @@
 const fetch = require("node-fetch");
 const { Pokemon, Tipo } = require("../db.js");
+const { alphabetically, byType } = require("./filtros.js");
 
-const info = async (num) => {
+const info = async (num, alpha, by, tipos) => {
   const api = await fetch("https://pokeapi.co/api/v2/pokemon");
   const data = await api.json();
   const api2 = await fetch(data.next);
   const data2 = await api2.json();
   const bd = await Pokemon.findAll({ include: Tipo });
 
-  const base = [...bd, ...data.results, ...data2.results];
+  let base = [...bd, ...data.results, ...data2.results];
+
+  if (alpha) base = alphabetically(base);
+  if (by === "2") {
+    base = [...bd];
+  } else if (by === "1") {
+    base = [...data.results, ...data2.results];
+  }
+
   let pokemonInfo = [];
   let inicio = num * 9 - 9;
   let antes = num * 9;
@@ -43,7 +52,8 @@ const info = async (num) => {
   }
   // const poke = await Pokemon.findAll({ include: Tipo });
   // pokemonInfo.push({ ...poke });
-
+  if(tipos) pokemonInfo = byType(pokemonInfo);
+  console.log(pokemonInfo[0].type[0].type.name);
   return pokemonInfo;
 };
 
@@ -56,7 +66,6 @@ const forName = async (name) => {
       include: Tipo,
     });
     if (db) {
-
       const types = db.tipos.map((t) => {
         return {
           type: {
@@ -64,7 +73,7 @@ const forName = async (name) => {
           },
         };
       });
-      
+
       const pokemonDb = [
         {
           id: db.id,
@@ -85,7 +94,6 @@ const forName = async (name) => {
           img: data.sprites.front_shiny,
         },
       ];
-
       return pokemonName;
     }
   } catch (error) {
@@ -97,7 +105,7 @@ const forId = async (id) => {
   try {
     const api = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await api.json();
-    
+
     const pokemonId = [
       {
         id: data.id,

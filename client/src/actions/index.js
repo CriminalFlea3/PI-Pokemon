@@ -17,10 +17,19 @@ export const getPokemons = () => async (dispatch) => {
 };
 
 export const getByName = (name) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3001/pokemons/${name}`);
+  const response = await fetch(`http://localhost:3001/pokemons?name=${name}`);
   const data = await response.json();
   dispatch({
     type: 'GET_NAME',
+    payload: data,
+  })
+}
+
+export const filters = (num) => async (dispatch) => {
+  const response = await fetch(`http://localhost:3001/pokemons?by=${num}`)
+  const data = await response.json();
+  dispatch({
+    type: 'FILTER',
     payload: data,
   })
 }

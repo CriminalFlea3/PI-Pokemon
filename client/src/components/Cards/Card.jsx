@@ -29,7 +29,7 @@ export const Card = () => {
               </figcaption>
             </figure>
           </Link>
-        )) : <img src="https://media.giphy.com/media/UHAYP0FxJOmFBuOiC2/giphy.gif" />
+        )) : <img src="https://media.giphy.com/media/UHAYP0FxJOmFBuOiC2/giphy.gif" alt="Not found" />
         }
       </div>
     </>

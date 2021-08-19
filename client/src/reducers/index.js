@@ -20,6 +20,11 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pokemons: action.payload,
       }
+    case 'FILTER':
+      return {
+        ...state,
+        pokemons: action.payload,
+      }
     default:
       return state;
   }
