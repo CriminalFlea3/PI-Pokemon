@@ -5,9 +5,8 @@ const { info, forName, forId } = require("../middlewares/middleware.js");
 const router = Router();
 
 router.get("/", async (req, res) => {
-  let { page, name, alpha, by } = req.query;
+  let { name, by } = req.query;
   let pokemonInfo = [];
-  if (!page) page = 1;
   if (name) {
     name = name.toLowerCase();
     pokemonInfo = await forName(name);
@@ -16,7 +15,7 @@ router.get("/", async (req, res) => {
     return res.json(pokemonInfo);
   }
 
-  pokemonInfo = await info(Number(page), alpha, by);
+  pokemonInfo = await info(by);
   if (!pokemonInfo.length) return res.json({ info: "No hay mas registros" });
 
   res.json(pokemonInfo);
