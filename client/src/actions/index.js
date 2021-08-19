@@ -33,3 +33,17 @@ export const filters = (num) => async (dispatch) => {
     payload: data,
   })
 }
+
+export const type = (type) => (dispatch) => {
+  dispatch({
+    type: 'BY_TYPE',
+    payload: type,
+  })
+}
+
+export const order = (order) => (dispatch) => {
+  dispatch({
+    type: 'ORDER',
+    payload: order,
+  })
+}

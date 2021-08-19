@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import style from "./search.module.css";
 import { useSelector, useDispatch } from "react-redux";
-import { filters, getByName } from "../../actions";
+import { filters, getByName, order, type } from "../../actions";
 
 export const Search = () => {
   const dispatch = useDispatch();
@@ -14,15 +14,22 @@ export const Search = () => {
     setPokemons(e.target.value);
   };
 
+  const byTipo = (e) => {
+    dispatch(type(e.target.value));
+  }
+  
   const submit = (e) => {
     e.preventDefault();
     dispatch(getByName(pokemons));
     setPokemons("");
   };
 
-  const ordenar = (e) => {
-    console.log(e.target.value)
+  const creadoBy = (e) => {
     dispatch(filters(e.target.value))
+  }
+
+  const orderBy = (e) => {
+    dispatch(order(e.target.value));
   }
 
   return (
@@ -40,25 +47,25 @@ export const Search = () => {
         </div>
       </form>
       <div className={style.field2}>
-        <select className={button} name="Type">
+        <select className={button} name="Type" onChange={byTipo}>
           <option value="">Tipo:</option>
           {options?.map((p) => (
-            <option value={p.slot} key={p.slot}>
+            <option value={p.name} key={p.slot}>
               {p.name}
             </option>
           ))}
         </select>
-        <select name="creado" className={button} onChange={ordenar}>
+        <select name="creado" className={button} onChange={creadoBy}>
           <option value="0">Creado por:</option>
           <option value="1">API</option>
           <option value="2">Fandom</option>
         </select>
-        <select name="Ordenar" className={button}>
+        <select name="Ordenar" className={button} onChange={orderBy}>
           <option value="">Ordenar por:</option>
           <option value="a-z">A-Z</option>
           <option value="z-a">Z-A</option>
           <option value="fuerza+">Fuerza+</option>
-          <option value="fuerza">Fuerza-</option>
+          <option value="fuerza-">Fuerza-</option>
         </select>
       </div>
     </div>

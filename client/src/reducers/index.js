@@ -1,6 +1,8 @@
 const initialState = {
   types: [],
   pokemons: [],
+  type: '',
+  order: ''
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -24,6 +26,16 @@ const rootReducer = (state = initialState, action) => {
       return {
         ...state,
         pokemons: action.payload,
+      }
+    case 'BY_TYPE':
+      return {
+        ...state,
+        type: action.payload,
+      }
+    case 'ORDER':
+      return {
+        ...state,
+        order: action.payload,
       }
     default:
       return state;

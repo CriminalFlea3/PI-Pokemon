@@ -2,18 +2,16 @@ const fetch = require("node-fetch");
 const { Pokemon, Tipo } = require("../db.js");
 
 const info = async (by) => {
-  const api = await fetch("https://pokeapi.co/api/v2/pokemon");
+  const api = await fetch("https://pokeapi.co/api/v2/pokemon?limit=40");
   const data = await api.json();
-  const api2 = await fetch(data.next);
-  const data2 = await api2.json();
   const bd = await Pokemon.findAll({ include: Tipo });
 
-  let base = [...bd, ...data.results, ...data2.results];
+  let base = [...bd, ...data.results];
 
   if (by === "2") {
     base = [...bd];
   } else if (by === "1") {
-    base = [...data.results, ...data2.results];
+    base = [...data.results];
   }
 
   let pokemonInfo = [];
@@ -26,21 +24,16 @@ const info = async (by) => {
       pokemonInfo.push({
         id: info.id,
         name: info.name,
-        type: info.types,
+        type: info.types.map((t) => t.type.name),
         img: info.sprites.front_shiny,
+        fuerza: info.stats[1].base_stat
       });
     } else {
-      const types = base[i].tipos.map((t) => {
-        return {
-          type: {
-            name: t.name,
-          },
-        };
-      });
       pokemonInfo.push({
         id: base[i].id,
         name: base[i].name,
-        type: types,
+        type: base[i].tipos.map((t) => t.name),
+        fuerza: base[i].fuerza,
         img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
       });
     }
@@ -59,19 +52,11 @@ const forName = async (name) => {
       include: Tipo,
     });
     if (db) {
-      const types = db.tipos.map((t) => {
-        return {
-          type: {
-            name: t.name,
-          },
-        };
-      });
-
       const pokemonDb = [
         {
           id: db.id,
           name: db.name,
-          type: types,
+          type: db.tipos.map((t) => t.name),
           img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
         },
       ];
@@ -83,7 +68,7 @@ const forName = async (name) => {
         {
           id: data.id,
           name: data.name,
-          type: data.types,
+          type: data.types.map((t) => t.type.name),
           img: data.sprites.front_shiny,
         },
       ];
@@ -103,7 +88,7 @@ const forId = async (id) => {
       {
         id: data.id,
         name: data.name,
-        type: data.types,
+        type: data.types.map((t) => t.type.name),
         img: data.sprites.front_shiny,
         vida: data.stats[0].base_stat,
         fuerza: data.stats[1].base_stat,
@@ -118,20 +103,11 @@ const forId = async (id) => {
   } catch (error) {}
   try {
     const db = await Pokemon.findByPk(id, { include: Tipo });
-
-    const types = db.tipos.map((t) => {
-      return {
-        type: {
-          name: t.name,
-        },
-      };
-    });
-
     const pokemonDb = [
       {
         id: db.id,
         name: db.name,
-        type: types,
+        type: db.tipos.map((t) => t.name),
         img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
         vida: db.vida,
         fuerza: db.fuerza,
