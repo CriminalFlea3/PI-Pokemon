@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPokemons } from "../../actions";
 import style from "./form.module.css";
 
 export const Form = () => {
+  const dispatch = useDispatch();
   const options = useSelector((store) => store.types);
 
   const validate = (input) => {
@@ -64,6 +66,7 @@ export const Form = () => {
       },
       body: JSON.stringify(data),
     });
+    dispatch(getPokemons());
     const respuesta = await crear.json();
     console.log(respuesta)
     setData({

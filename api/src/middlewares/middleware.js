@@ -25,8 +25,9 @@ const info = async (by) => {
         id: info.id,
         name: info.name,
         type: info.types.map((t) => t.type.name),
-        img: info.sprites.front_shiny,
-        fuerza: info.stats[1].base_stat
+        img: info.sprites.versions["generation-v"]["black-white"].animated
+          .front_default,
+        fuerza: info.stats[1].base_stat,
       });
     } else {
       pokemonInfo.push({
@@ -69,7 +70,8 @@ const forName = async (name) => {
           id: data.id,
           name: data.name,
           type: data.types.map((t) => t.type.name),
-          img: data.sprites.front_shiny,
+          img: data.sprites.versions["generation-v"]["black-white"].animated
+            .front_default,
         },
       ];
       return pokemonName;
@@ -84,42 +86,40 @@ const forId = async (id) => {
     const api = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
     const data = await api.json();
 
-    const pokemonId = [
-      {
-        id: data.id,
-        name: data.name,
-        type: data.types.map((t) => t.type.name),
-        img: data.sprites.front_shiny,
-        vida: data.stats[0].base_stat,
-        fuerza: data.stats[1].base_stat,
-        defensa: data.stats[2].base_stat,
-        velocidad: data.stats[5].base_stat,
-        height: data.height,
-        weight: data.weight,
-      },
-    ];
+    const pokemonId = {
+      id: data.id,
+      name: data.name,
+      type: data.types.map((t) => t.type.name),
+      img: data.sprites.versions["generation-v"]["black-white"].animated
+        .front_default,
+      vida: data.stats[0].base_stat,
+      fuerza: data.stats[1].base_stat,
+      defensa: data.stats[2].base_stat,
+      velocidad: data.stats[5].base_stat,
+      height: data.height,
+      weight: data.weight,
+    };
 
     return pokemonId;
   } catch (error) {}
   try {
     const db = await Pokemon.findByPk(id, { include: Tipo });
-    const pokemonDb = [
-      {
-        id: db.id,
-        name: db.name,
-        type: db.tipos.map((t) => t.name),
-        img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
-        vida: db.vida,
-        fuerza: db.fuerza,
-        defensa: db.defensa,
-        velocidad: db.velocidad,
-        height: db.altura,
-        weight: db.peso,
-      },
-    ];
+    const pokemonDb = {
+      id: db.idPoke,
+      name: db.name,
+      type: db.tipos.map((t) => t.name),
+      img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
+      vida: db.vida,
+      fuerza: db.fuerza,
+      defensa: db.defensa,
+      velocidad: db.velocidad,
+      height: db.altura,
+      weight: db.peso,
+    };
+
     return pokemonDb;
   } catch (error) {
-    return [];
+    return {};
   }
 };
 

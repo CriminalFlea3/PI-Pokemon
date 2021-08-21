@@ -10,8 +10,7 @@ export const Navbar = () => {
           <img src="img/logo.png" alt="" />
         </Link>
         <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/pokedex">Pokedex</Link></li>
+            <li><Link to="/home">Pokedex</Link></li>
             <li><Link to="/create">Create</Link></li>
             <li><Link to="/team">My team</Link></li>
         </ul>

@@ -7,6 +7,7 @@ import { Pokedex } from "./Pages/Pokedex/Pokedex";
 import { Create } from "./Pages/Create/Create";
 import { Navbar } from "./components/Navbar/Navbar";
 import { getPokemons, getTypes } from "./actions";
+import { Pokemon } from "./components/Pokemon/Pokemon";
 
 function App() {
   const dispatch = useDispatch();
@@ -18,10 +19,13 @@ function App() {
   return (
     <>
       <Navbar />
+      <Route exact path="/pokedex/:id" >
+        <Pokemon />
+      </Route>
       <Route exact path="/">
         <LandingPage />
       </Route>
-      <Route exact path="/pokedex">
+      <Route exact path="/home">
         <Pokedex />
       </Route>
       <Route exact path="/create">

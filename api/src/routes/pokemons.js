@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const pokemonInfo = await forId(id);
-  if (!pokemonInfo.length)
+  if (!pokemonInfo.id)
     return res.json({ info: "No se encontro el pokemon" });
   res.json(pokemonInfo);
 });

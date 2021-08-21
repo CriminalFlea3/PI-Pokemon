@@ -1,48 +1,15 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
-import { ordered, tipos } from "../../helpers/filtros";
 import "./card.css";
 
-export const Card = () => {
-  let pokemons = useSelector((store) => store.pokemons);
-  const type = useSelector((store) => store.type);
-  const order = useSelector((store) => store.order);
-
-  if (type) pokemons = tipos(type, pokemons);
-  if(order) pokemons = ordered(order, pokemons)
-
-
-  const [page, setPage] = useState(0);
-
-  const pagination = () => {
-    if (pokemons.length) return pokemons.slice(page, page + 9);
-    return [];
-  };
-
-  const nextPage = () => {
-    if (pokemons.length > page + 9) {
-      setPage(page + 9);
-    }
-  };
-
-  const previusPage = () => {
-    if (page > 0) {
-      setPage(page - 9);
-    }
-  };
-
+export const Card = ({array}) => {
+  
   return (
     <>
-      <div className="botones">
-        <button onClick={previusPage} className="pages"> &laquo; Previus</button>
-        <button onClick={nextPage} className="pages">Next &raquo;</button>
-      </div>
-
       <div className="container">
-        {pagination().length ? (
-          pagination().map((p) => (
-            <Link to={`/${p.id}`} key={p.name}>
+        {array.length ? (
+          array.map((p) => (
+            <Link to={`/pokedex/${p.id}`} key={p.name}>
               <figure className={p.type[0]}>
                 <div className="cardImageContainer">
                   <img src={p.img} alt="" className="CardImage" />
@@ -63,9 +30,14 @@ export const Card = () => {
               </figure>
             </Link>
           ))
-        ) : (
+        ) : array.info ? (
           <img
             src="https://media.giphy.com/media/UHAYP0FxJOmFBuOiC2/giphy.gif"
+            alt="Not found"
+          />
+        ) : (
+          <img
+            src="https://c.tenor.com/F30e8arYkdYAAAAC/pokemon-spinning.gif"
             alt="Not found"
           />
         )}
