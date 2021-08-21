@@ -6,7 +6,7 @@
 
 .field {
   display: flex;
-  position: realtive;
+  position: relative;
   margin: 5em auto;
   width: 70%;
   flex-direction: row;
