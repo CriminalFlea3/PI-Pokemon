@@ -1,8 +1,9 @@
 const initialState = {
   types: [],
   pokemons: [],
-  type: '',
-  order: ''
+  type: "",
+  order: "",
+  team: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -17,26 +18,32 @@ const rootReducer = (state = initialState, action) => {
         ...state,
         pokemons: action.payload,
       };
-    case 'GET_NAME':
+    case "GET_NAME":
       return {
         ...state,
         pokemons: action.payload,
-      }
-    case 'FILTER':
+      };
+    case "FILTER":
       return {
         ...state,
         pokemons: action.payload,
-      }
-    case 'BY_TYPE':
+      };
+    case "BY_TYPE":
       return {
         ...state,
         type: action.payload,
-      }
-    case 'ORDER':
+      };
+    case "ORDER":
       return {
         ...state,
         order: action.payload,
-      }
+      };
+    case "ADD":
+      if(state.team.length === 8) state.team.shift();
+      return {
+        ...state,
+        team: [...state.team, action.payload]
+      };
     default:
       return state;
   }

@@ -17,8 +17,8 @@ export const Pokedex = () => {
 
   const pagination = () => {
     if (pokemons.length) return pokemons.slice(page, page + 9);
-    if( pokemons.info ) return pokemons;
-    return []
+    if (pokemons.info) return pokemons;
+    return [];
   };
 
   const array = pagination();
@@ -46,7 +46,10 @@ export const Pokedex = () => {
           Next &raquo;
         </button>
       </div>
-      <Card array={array} />
+      <Card
+        array={array}
+        img={"https://c.tenor.com/F30e8arYkdYAAAAC/pokemon-spinning.gif"}
+      />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import { Create } from "./Pages/Create/Create";
 import { Navbar } from "./components/Navbar/Navbar";
 import { getPokemons, getTypes } from "./actions";
 import { Pokemon } from "./components/Pokemon/Pokemon";
+import { Team } from "./Pages/Team/Team";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
       </Route>
       <Route exact path="/create">
         <Create />
+      </Route>
+      <Route exact path="/team">
+        <Team />
       </Route>
     </>
   );

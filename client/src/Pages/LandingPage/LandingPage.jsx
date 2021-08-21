@@ -16,7 +16,7 @@ export const LandingPage = () => {
           its strengths, disadvantages and <br />
           abilities.
         </p>
-        <Link to="/pokedex">
+        <Link to="/home">
           <input type="submit" value="See Pokemon" className={style.myButton} />
         </Link>
 

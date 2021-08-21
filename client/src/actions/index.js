@@ -20,30 +20,37 @@ export const getByName = (name) => async (dispatch) => {
   const response = await fetch(`http://localhost:3001/pokemons?name=${name}`);
   const data = await response.json();
   dispatch({
-    type: 'GET_NAME',
+    type: "GET_NAME",
     payload: data,
-  })
-}
+  });
+};
 
 export const filters = (num) => async (dispatch) => {
-  const response = await fetch(`http://localhost:3001/pokemons?by=${num}`)
+  const response = await fetch(`http://localhost:3001/pokemons?by=${num}`);
   const data = await response.json();
   dispatch({
-    type: 'FILTER',
+    type: "FILTER",
     payload: data,
-  })
-}
+  });
+};
 
 export const type = (type) => (dispatch) => {
   dispatch({
-    type: 'BY_TYPE',
+    type: "BY_TYPE",
     payload: type,
-  })
-}
+  });
+};
 
 export const order = (order) => (dispatch) => {
   dispatch({
-    type: 'ORDER',
+    type: "ORDER",
     payload: order,
-  })
-}
+  });
+};
+
+export const add = (pokemon) => (dispatch) => {
+  dispatch({
+    type: "ADD",
+    payload: pokemon,
+  });
+};

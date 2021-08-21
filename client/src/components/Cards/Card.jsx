@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./card.css";
 
-export const Card = ({array}) => {
+export const Card = ({array , img}) => {
   
   return (
     <>
@@ -37,7 +37,7 @@ export const Card = ({array}) => {
           />
         ) : (
           <img
-            src="https://c.tenor.com/F30e8arYkdYAAAAC/pokemon-spinning.gif"
+            src={img}
             alt="Not found"
           />
         )}

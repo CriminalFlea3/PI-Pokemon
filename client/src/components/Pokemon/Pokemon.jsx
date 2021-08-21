@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import style from "./pokemon.module.css";
+import { add } from "../../actions";
 
 export const Pokemon = () => {
   const { id } = useParams();
 
-  const history = useHistory()
+  const dispatch = useDispatch();
+
+  const history = useHistory();
 
   const [pokemon, setPokemon] = useState({});
+
+  const addTeam = (pokemon) => {
+    dispatch(add(pokemon));
+  };
 
   useEffect(() => {
     detalles();
@@ -26,8 +34,18 @@ export const Pokemon = () => {
         <h2>#{pokemon.id}</h2>
 
         <div class={style.pokebola}>
-            <p>Capturar</p>
-          <button onClick={() => history.push('/team')}>
+          <p>Capturar</p>
+          <button
+            onClick={() => {
+              history.push("/team");
+              addTeam({
+                id: pokemon.id,
+                name: pokemon.name,
+                type: pokemon.type,
+                img: pokemon.img,
+              });
+            }}
+          >
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/5/51/Pokebola-pokeball-png-0.png"
               alt=""
