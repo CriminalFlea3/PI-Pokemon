@@ -1,28 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import style from "./pokemon.module.css";
-import { add } from "../../actions";
 
 export const Pokemon = () => {
   const { id } = useParams();
-
-  const dispatch = useDispatch();
-
   const history = useHistory();
 
   const [pokemon, setPokemon] = useState({});
 
-  const addTeam = (pokemon) => {
-    dispatch(add(pokemon));
+  const addTeam = (obj) => {
+    let array = [];
+    if (localStorage.getItem("team")) {
+      array = localStorage.getItem("team");
+      array = JSON.parse(array);
+      if(array.length >= 8 ) array.shift();
+      array.push(obj);
+      localStorage.setItem("team", JSON.stringify(array));
+    } else {
+      array.push(obj);
+      localStorage.setItem("team", JSON.stringify(array));
+    }
+    history.push("/team");
   };
 
   useEffect(() => {
     detalles();
-  });
+  }, []);
 
   const detalles = async () => {
     const data = await fetch(`http://localhost:3001/pokemons/${id}`);
+
     const pokemon = await data.json();
     setPokemon(pokemon);
   };
@@ -37,9 +44,7 @@ export const Pokemon = () => {
           <p>Capturar</p>
           <button
             onClick={() => {
-              history.push("/team");
-              addTeam({
-                id: pokemon.id,
+              addTeam({id: pokemon.id,
                 name: pokemon.name,
                 type: pokemon.type,
                 img: pokemon.img,

@@ -15,6 +15,7 @@ export const Form = () => {
 
     return errors;
   };
+
   const [data, setData] = useState({
     name: "",
     vida: 0,
@@ -37,7 +38,7 @@ export const Form = () => {
     );
     setData({
       ...data,
-      [e.target.name]: e.target.value,
+      [e.target.name]: Number(e.target.value) <= 0 ? 0 : e.target.value,
     });
   };
 
@@ -68,7 +69,7 @@ export const Form = () => {
     });
     dispatch(getPokemons());
     const respuesta = await crear.json();
-    console.log(respuesta)
+    console.log(respuesta);
     setData({
       name: "",
       vida: 0,

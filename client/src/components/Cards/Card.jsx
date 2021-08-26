@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./card.css";
 
-export const Card = ({array , img}) => {
-  
+export const Card = ({ array, img }) => {
   return (
     <>
       <div className="container">
@@ -30,14 +29,13 @@ export const Card = ({array , img}) => {
               </figure>
             </Link>
           ))
-        ) : array.info ? (
-          <img
-            src="https://media.giphy.com/media/UHAYP0FxJOmFBuOiC2/giphy.gif"
-            alt="Not found"
-          />
         ) : (
           <img
-            src={img}
+            src={
+              array.info
+                ? "https://media.giphy.com/media/UHAYP0FxJOmFBuOiC2/giphy.gif"
+                : img
+            }
             alt="Not found"
           />
         )}
