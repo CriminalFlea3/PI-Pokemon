@@ -32,6 +32,7 @@ const info = async (by) => {
     } else {
       pokemonInfo.push({
         id: base[i].id,
+        idPoke: base[i].idPoke,
         name: base[i].name,
         type: base[i].tipos.map((t) => t.name),
         fuerza: base[i].fuerza,
@@ -56,6 +57,7 @@ const forName = async (name) => {
       const pokemonDb = [
         {
           id: db.id,
+          idPoke: db.idPoke,
           name: db.name,
           type: db.tipos.map((t) => t.name),
           img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif",
