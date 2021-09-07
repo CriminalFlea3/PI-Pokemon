@@ -24,15 +24,13 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const pokemonInfo = await forId(id);
-  if (!pokemonInfo.id)
-    return res.json({ info: "No se encontro el pokemon" });
+  if (!pokemonInfo.id) return res.json({ info: "No se encontro el pokemon" });
   res.json(pokemonInfo);
 });
 
 router.post("/", async (req, res) => {
   let { name, vida, fuerza, defensa, velocidad, altura, peso, tipos } =
     req.body;
-  console.log(req.body);
   if (
     isNaN(vida) ||
     isNaN(fuerza) ||
