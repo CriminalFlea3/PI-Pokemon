@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import style from "./pokemon.module.css";
+import Stats from "../Stats";
 
 export const Pokemon = () => {
   const { id } = useParams();
@@ -13,7 +14,7 @@ export const Pokemon = () => {
     if (localStorage.getItem("team")) {
       array = localStorage.getItem("team");
       array = JSON.parse(array);
-      if(array.length >= 8 ) array.shift();
+      if (array.length >= 8) array.shift();
       array.push(obj);
       localStorage.setItem("team", JSON.stringify(array));
     } else {
@@ -44,7 +45,8 @@ export const Pokemon = () => {
           <p>Capturar</p>
           <button
             onClick={() => {
-              addTeam({id: pokemon.id,
+              addTeam({
+                id: pokemon.id,
                 name: pokemon.name,
                 type: pokemon.type,
                 img: pokemon.img,
@@ -73,60 +75,12 @@ export const Pokemon = () => {
         </div>
         <div className={style.meter}>
           <div className={style.type}>
-            <div>
-              <meter
-                min="0"
-                max="120"
-                value={pokemon.vida}
-                low="25"
-                high="100"
-                optimum="120"
-              />
-              <p>
-                hp ------ <span>{pokemon.vida}</span>
-              </p>
-            </div>
-            <div>
-              <meter
-                min="0"
-                max="120"
-                value={pokemon.fuerza}
-                low="25"
-                high="100"
-                optimum="120"
-              />
-              <p>
-                fuerza ------ <span>{pokemon.fuerza}</span>
-              </p>
-            </div>
+            <Stats valor={pokemon.vida} nombre={"HP"} />
+            <Stats valor={pokemon.fuerza} nombre={"Fuerza"} />
           </div>
           <div className={style.type}>
-            <div>
-              <meter
-                min="0"
-                max="120"
-                value={pokemon.defensa}
-                low="25"
-                high="100"
-                optimum="120"
-              />
-              <p>
-                defensa ------ <span>{pokemon.defensa}</span>
-              </p>
-            </div>
-            <div>
-              <meter
-                min="0"
-                max="120"
-                value={pokemon.velocidad}
-                low="25"
-                high="100"
-                optimum="120"
-              />
-              <p>
-                velocidad ------ <span>{pokemon.velocidad}</span>
-              </p>
-            </div>
+            <Stats valor={pokemon.defensa} nombre={"Defensa"} />
+            <Stats valor={pokemon.velocidad} nombre={"Velocidad"} />
           </div>
         </div>
       </div>

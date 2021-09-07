@@ -30,16 +30,23 @@ export const Form = () => {
   const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
-    setErrors(
-      validate({
+    if (e.target.name !== "name") {
+      setData({
+        ...data,
+        [e.target.name]: Number(e.target.value) <= 0 ? 0 : e.target.value,
+      });
+    } else {
+      setErrors(
+        validate({
+          ...data,
+          [e.target.name]: e.target.value,
+        })
+      );
+      setData({
         ...data,
         [e.target.name]: e.target.value,
-      })
-    );
-    setData({
-      ...data,
-      [e.target.name]: Number(e.target.value) <= 0 ? 0 : e.target.value,
-    });
+      });
+    }
   };
 
   const checkbox = (e) => {
